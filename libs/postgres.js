@@ -6,7 +6,7 @@ async function getConnection() {
     port: 5432,
     user: 'RmC',
     password: 'admin123',
-    database: 'simpsons_api'
+    database: 'al_test'
   });
   await client.connect();
   return client;

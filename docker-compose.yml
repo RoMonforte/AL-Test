@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres:13
     environment:
-      - POSTGRES_DB=simpsons_api
+      - POSTGRES_DB=al_test
       - POSTGRES_USER=RmC
       - POSTGRES_PASSWORD=admin123
     ports:
