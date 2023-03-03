@@ -32,21 +32,37 @@ class OrderService {
     }
 
     async addItem(data) {
-        const newItem = await models.OrderProduct.create(data);
-        return newItem;
+        const existingItem = await models.OrderProduct.findOne({
+            where: { orderId: data.orderId, productCode: data.productCode }
+          });
+          if (existingItem) {
+            const updatedItem = await existingItem.update({
+              amount: existingItem.amount + data.amount
+            });
+            return updatedItem;
+          } else {
+            const newItem = await models.OrderProduct.create(data);
+            return newItem;
+          }
     }
 
-    async removeItem(code) {
-        const removeItem = await models.OrderProduct.destroy({
-            where: {
-                productCode: code
-            }
+    async removeItem(code, amount) {
+        const item = await models.OrderProduct.findOne({
+          where: { productCode: code }
         });
-        if (removeItem === 0) {
-            return{message: 'Item not found'};
+        if (item) {
+          const newAmount = item.amount - amount;
+          if (newAmount > 0) {
+            const updatedItem = await item.update({ amount: newAmount });
+            return { message: 'Amount removed from item successfully.' };
+          } else {
+            await item.destroy();
+            return { message: 'Item deleted successfully.' };
+          }
+        } else {
+          return { message: 'Item not found.' };
         }
-        return {message: 'Item deleted successfully.'};
-    }
+      }
 }
 
 module.exports = OrderService;

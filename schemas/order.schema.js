@@ -22,7 +22,8 @@ const addItemSchema = Joi.object({
 
 const removeItemSchema = Joi.object({
     orderId: orderId.required(),
-    productCode: productCode.required(),       
+    productCode: productCode.required(),
+    amount: amount.required(),       
 })
 
 

@@ -64,7 +64,8 @@ validatorHandler(removeItemSchema, 'body'),
 async (req, res, next) => {
   try {
     const  code  = req.body.productCode;
-    const deletedItem = await service.removeItem(code);
+    const amount = req.body.amount;
+    const deletedItem = await service.removeItem(code, amount);
     res.status(200).json(deletedItem);
   } catch (error) {
     next(error);
