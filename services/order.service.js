@@ -7,7 +7,19 @@ class OrderService {
     async find() {
         const orders = await models.Order.findAll(
             {
-                include: ['user','items']
+                include: [
+                    {
+                        model: models.User,
+                        as: 'user',
+                        attributes: { exclude: ['role', 'password','createdAt'] }
+                    },
+                    {
+                        model: models.Product,
+                        as: 'items',
+                        through: { attributes: ['id', 'productCode', 'amount'] },
+                        attributes: { exclude: ['createdAt'] }
+                    }
+                ]
             }
         );
         return orders;
@@ -15,14 +27,34 @@ class OrderService {
 
     async create(data) {
         const newOrder = await models.Order.create(data, {
-            include: ['user','items']
+            include: [{
+                model: models.User,
+                as: 'user',
+                attributes: { exclude: ['role', 'password','createdAt'] }
+            },
+            {
+                model: models.Product,
+                as: 'items',
+                through: { attributes: ['id', 'productCode', 'amount'] },
+                attributes: { exclude: ['createdAt'] }
+            }]
         });
         return newOrder;
     }
 
     async findOne(id) {
         const order = await models.Order.findByPk(id, {
-            include: ['user','items']
+            include: [{
+                model: models.User,
+                as: 'user',
+                attributes: { exclude: ['role', 'password','createdAt'] }
+            },
+            {
+                model: models.Product,
+                as: 'items',
+                through: { attributes: ['id', 'productCode', 'amount'] },
+                attributes: { exclude: ['createdAt'] }
+            }]
         },
         );
         if (!order) {
@@ -51,9 +83,10 @@ class OrderService {
           where: { productCode: code }
         });
         if (item) {
-          const newAmount = item.amount - amount;
+          const oldAmount = await item.amount;
+          const newAmount = await oldAmount - amount;
           if (newAmount > 0) {
-            const updatedItem = await item.update({ amount: newAmount });
+            await item.update({ amount: newAmount });
             return { message: 'Amount removed from item successfully.' };
           } else {
             await item.destroy();
