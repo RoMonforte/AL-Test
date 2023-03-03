@@ -1,27 +1,30 @@
-const express = require('express');
+const express = require("express");
 
-const ProductsService = require('../services/products.service');
-const validatorHandler = require('../middlewares/validator.handler');
-const {createProductSchema, updateProductSchema, getProductSchema} = require('../schemas/product.schema');
-const passport = require('passport');
-const {checkRoles} = require ('../middlewares/auth.handler');
-
+const ProductsService = require("../services/products.service");
+const validatorHandler = require("../middlewares/validator.handler");
+const {
+  createProductSchema,
+  updateProductSchema,
+  getProductSchema,
+} = require("../schemas/product.schema");
+const passport = require("passport");
+const { checkRoles } = require("../middlewares/auth.handler");
 
 const router = express.Router();
 const service = new ProductsService();
 
-router.get('/',
-async (req, res, next) => {
-    try {
-        const products = await service.find();
-        res.json(products);
-    } catch (err) {
-        next(err)
-    }
+router.get("/", async (req, res, next) => {
+  try {
+    const products = await service.find();
+    res.json(products);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.get('/:code',
-  validatorHandler(getProductSchema, 'params'),
+router.get(
+  "/:code",
+  validatorHandler(getProductSchema, "params"),
   async (req, res, next) => {
     try {
       const { code } = req.params;
@@ -33,8 +36,11 @@ router.get('/:code',
   }
 );
 
-router.post('/',
-  validatorHandler(createProductSchema, 'body'),
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  checkRoles("admin"),
+  validatorHandler(createProductSchema, "body"),
   async (req, res, next) => {
     try {
       const body = req.body;
@@ -46,9 +52,12 @@ router.post('/',
   }
 );
 
-router.patch('/:code',
-  validatorHandler(getProductSchema, 'params'),
-  validatorHandler(updateProductSchema, 'body'),
+router.patch(
+  "/:code",
+  passport.authenticate("jwt", { session: false }),
+  checkRoles("admin"),
+  validatorHandler(getProductSchema, "params"),
+  validatorHandler(updateProductSchema, "body"),
   async (req, res, next) => {
     try {
       const { code } = req.params;
@@ -61,18 +70,20 @@ router.patch('/:code',
   }
 );
 
-router.delete('/:code',
-  validatorHandler(getProductSchema, 'params'),
+router.delete(
+  "/:code",
+  passport.authenticate("jwt", { session: false }),
+  checkRoles("admin"),
+  validatorHandler(getProductSchema, "params"),
   async (req, res, next) => {
     try {
       const { code } = req.params;
       await service.delete(code);
-      res.status(201).json({code});
+      res.status(201).json({ code });
     } catch (error) {
       next(error);
     }
   }
 );
-
 
 module.exports = router;

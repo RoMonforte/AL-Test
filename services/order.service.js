@@ -25,6 +25,30 @@ class OrderService {
         return orders;
     }
 
+    async findByUser(userId) {
+      const orders = await models.Order.findAll(
+        {
+          where: {
+            '$user.id$' : userId
+          },
+          include: [
+              {
+                  model: models.User,
+                  as: 'user',
+                  attributes: { exclude: ['role', 'password','createdAt'] }
+              },
+              {
+                  model: models.Product,
+                  as: 'items',
+                  through: { attributes: ['id', 'productCode', 'amount'] },
+                  attributes: { exclude: ['createdAt'] }
+              }
+          ]
+      }
+      );
+      return orders;
+    }
+
     async create(data) {
         const newOrder = await models.Order.create(data, {
             include: [{

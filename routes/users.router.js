@@ -1,27 +1,37 @@
-const express = require('express');
+const express = require("express");
 
-const UsersService = require('../services/users.service');
-const validatorHandler = require('../middlewares/validator.handler');
-const {createUserSchema, updateUserSchema, getUserSchema} = require('../schemas/user.schema');
-const passport = require('passport');
-const {checkRoles} = require ('../middlewares/auth.handler');
-
+const UsersService = require("../services/users.service");
+const validatorHandler = require("../middlewares/validator.handler");
+const {
+  createUserSchema,
+  updateUserSchema,
+  getUserSchema,
+} = require("../schemas/user.schema");
+const passport = require("passport");
+const { checkRoles } = require("../middlewares/auth.handler");
 
 const router = express.Router();
 const service = new UsersService();
 
-router.get('/',
-async (req, res, next) => {
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  checkRoles("admin"),
+  async (req, res, next) => {
     try {
-        const users = await service.find();
-        res.json(users);
+      const users = await service.find();
+      res.json(users);
     } catch (err) {
-        next(err)
+      next(err);
     }
-});
+  }
+);
 
-router.get('/:id',
-  validatorHandler(getUserSchema, 'params'),
+router.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  checkRoles("admin"),
+  validatorHandler(getUserSchema, "params"),
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -33,8 +43,11 @@ router.get('/:id',
   }
 );
 
-router.post('/',
-  validatorHandler(createUserSchema, 'body'),
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  checkRoles("admin"),
+  validatorHandler(createUserSchema, "body"),
   async (req, res, next) => {
     try {
       const body = req.body;
@@ -46,9 +59,12 @@ router.post('/',
   }
 );
 
-router.patch('/:id',
-  validatorHandler(getUserSchema, 'params'),
-  validatorHandler(updateUserSchema, 'body'),
+router.patch(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  checkRoles("admin"),
+  validatorHandler(getUserSchema, "params"),
+  validatorHandler(updateUserSchema, "body"),
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -61,18 +77,20 @@ router.patch('/:id',
   }
 );
 
-router.delete('/:id',
-  validatorHandler(getUserSchema, 'params'),
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  checkRoles("admin"),
+  validatorHandler(getUserSchema, "params"),
   async (req, res, next) => {
     try {
       const { id } = req.params;
       await service.delete(id);
-      res.status(201).json({id});
+      res.status(201).json({ id });
     } catch (error) {
       next(error);
     }
   }
 );
-
 
 module.exports = router;

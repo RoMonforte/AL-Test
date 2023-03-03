@@ -20,6 +20,18 @@ async (req, res, next) => {
     }
 });
 
+router.get('/my-orders',
+passport.authenticate("jwt", { session: false }),
+async (req, res, next) => {
+    try {
+        const user = req.user;
+        const orders = await service.findByUser(user.sub);
+        res.json(orders);
+    } catch (err) {
+        next(err)
+    }
+});
+
 router.get('/:id',
   validatorHandler(getOrderSchema, 'params'),
   async (req, res, next) => {

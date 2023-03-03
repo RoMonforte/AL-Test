@@ -10,6 +10,8 @@ const {logErrors, errorHandler, boomErrorHandler} = require ('./middlewares/erro
 app.use(express.json());
 // app.use(cors(options));
 
+require('./utils/auth');
+
 app.get('/', (req,res) => {
     res.send('Test for Agave Lab');
 })

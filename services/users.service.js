@@ -31,6 +31,14 @@ class UsersService {
         return user;
     }
 
+    async findByUsername(username) {
+        const rta = await models.User.findOne( {
+          where: {username}
+        });
+        return rta;
+    
+      }
+
     async update(id, changes) {
         const user = await this.findOne(id);
         const rta = await user.update(changes);
