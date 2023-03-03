@@ -20,6 +20,8 @@ app.listen(port, () => {
     console.log('Im running in port number ' + port);
 });
 
+module.exports = app;
+
 routerApi(app);
 
 app.use(logErrors);
