@@ -2,7 +2,7 @@ const express = require('express');
 
 const OrderService = require('../services/order.service');
 const validatorHandler = require('../middlewares/validator.handler');
-const {createOrderSchema, getOrderSchema} = require('../schemas/order.schema');
+const {createOrderSchema, getOrderSchema, addItemSchema, removeItemSchema} = require('../schemas/order.schema');
 const passport = require('passport');
 const {checkRoles} = require ('../middlewares/auth.handler');
 
@@ -45,5 +45,31 @@ router.post('/',
     }
   }
 );
+
+router.post('/add-item',
+  validatorHandler(addItemSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const newItem = await service.addItem(body);
+      res.status(201).json(newItem);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.delete('/remove-item',
+validatorHandler(removeItemSchema, 'body'),
+async (req, res, next) => {
+  try {
+    const  code  = req.body.productCode;
+    const deletedItem = await service.removeItem(code);
+    res.status(200).json(deletedItem);
+  } catch (error) {
+    next(error);
+  }
+}
+)
 
 module.exports = router;

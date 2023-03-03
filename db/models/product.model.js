@@ -20,7 +20,6 @@ const ProductSchema = {
 
 class Product extends Model {
     static associate(models) {
-      this.belongsTo(models.User, {as: 'product_in_order'})
     }
     static config(sequelize) {
       return {
