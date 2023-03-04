@@ -2,6 +2,9 @@
 # You can interact with the API REST in the next link:
 https://al-test-production.up.railway.app/
 
+## Swagger documentation
+https://al-test-production.up.railway.app/api/v1/api-docs
+
 # AL-Test
 
 An API Rest from a Test:
@@ -39,45 +42,13 @@ amount to be paid.
 
 
 ### INSTRUCTIONS:
-Implement a basic API for our store.
-Testing: Unit (chai, jest).
-API: Express, Authentication (passport.js)
-DB: ORM (Sequelize) Postgresql.
-Plus: Graphql, Docker Setup
+Implement a basic API for our store.  
+Testing: Unit (chai, jest).  
+API: Express, Authentication (passport.js)  
+DB: ORM (Sequelize) Postgresql.  
+Plus: Graphql, Docker Setup  
 
+# For login:
+user: admin  
+password: admin
 
-# Login Endpoints
-  https://al-test-production.up.railway.app/api/v1/auth/login  
-### For admin login:   
-username: admin  
-password: admin  
-
-# For create an order:
-https://al-test-production.up.railway.app/api/v1/orders  
-POST  a JSON with the userId from the user you want a create the order(admin is userId= 1)  
-{  
-	"userId": 1  
-}   
-
-# Add an item to your order:
-https://al-test-production.up.railway.app/api/v1/orders/add-item  
-POST a JSON with the item you want to add:  
-{  
-	"orderId": 1,  
-	"productCode": "TSHIRT",  
-	"amount": 7  
-}  
-
-# Remove an item to your order:
-https://al-test-production.up.railway.app/api/v1/orders/remove-item  
-DEL a JSON with the item you want to remove:  
-{  
-	"orderId": 1,  
-	"productCode": "TSHIRT",  
-	"amount": 7  
-}  
-
-# Check your order
-
-Check your order and totals:
-https://al-test-production.up.railway.app/api/v1/orders/my-orders
