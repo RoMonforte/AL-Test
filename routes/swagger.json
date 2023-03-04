@@ -1,0 +1,251 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Swagger Agave-Lab - OpenAPI 3.0",
+    "description": "Welcome to Agave Lab e-commerce \n\n_Documentation created with swagger for an easy interaction with the API Rest._\n\nSome useful links:\n- [Repository](https://github.com/RoMonforte/AL-Test) \n- [Prod link](https://al-test-production.up.railway.app/)",
+    "version": "1.0.11"
+  },
+  "tags": [
+    {
+      "name": "login",
+      "description": "Login with an existing user to obtain a JWT."
+    },
+    {
+      "name": "orders",
+      "description": "Manipulate the orders that exists."
+    },
+    {
+      "name": "products",
+      "description": "Manipulate the products that exists."
+    },
+    {
+      "name": "users",
+      "description": "Manipulate the users that exists."
+    }
+  ],
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Login to your account.",
+        "description": "Login to your account.",
+        "operationId": "login",
+        "requestBody": {
+          "description": "Login to an existing account"
+        }
+      }
+    },
+    "/api/v1/orders/my-orders": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Check the existing orders of logged session.",
+        "description": "Check the orders of the user logged with the JWT.",
+        "operationId": "my-orders",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/api/v1/orders": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Consult all orders.",
+        "description": "Consult all orders.",
+        "operationId": "getorders",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/api/v1/orders/:id": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Consult a single order giving the id.",
+        "description": "Consult a single order giving the id.",
+        "operationId": "getsingleorder"
+      }
+    },
+    "/api/v1/orders/": {
+      "post": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Create a new order.",
+        "description": "Create a new order.",
+        "operationId": "neworder",
+        "requestBody": {
+          "description": "Create a new order"
+        }
+      }
+    },
+    "/api/v1/orders/add-item": {
+      "post": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Add a new item to an existing order.",
+        "description": "Add a new item to an existing order.",
+        "operationId": "add-item",
+        "requestBody": {
+          "description": "Add a new item to an existing order"
+        }
+      }
+    },
+    "/api/v1/orders/remove-item": {
+      "delete": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Remove items of an existing order.",
+        "description": "Remove items of an existing order.",
+        "operationId": "remove-item"
+      }
+    },
+    "/api/v1/products": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Get all products of the e-commerce.",
+        "description": "Get all products of the e-commerce.",
+        "operationId": "getproducts"
+      },
+      "post": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Create a new product.",
+        "description": "Create a new product.",
+        "operationId": "createproduct",
+        "requestBody": {
+          "description": "Create a new product"
+        }
+      }
+    },
+    "/api/v1/products/:CODE": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Get a single product giving their code.",
+        "description": "Get a single product giving their code.",
+        "operationId": "getsingleproducts"
+      },
+      "patch": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Modify an existing product.",
+        "description": "Modify an existing product.",
+        "operationId": "patchproduct"
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get all users of the e-commerce.",
+        "description": "Get all users of the e-commerce.",
+        "operationId": "getusers"
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Create a new user.",
+        "description": "Create a new user.",
+        "operationId": "createuser"
+      }
+    },
+    "/api/v1/users/:id": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get a single user giving their id.",
+        "description": "Get a single user giving their id.",
+        "operationId": "getsingleuser"
+      },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Modify an existing user.",
+        "description": "Modify an existing user.",
+        "operationId": "patchuser"
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Delete a user.",
+        "description": "Delete a product.",
+        "operationId": "delete-user"
+      }
+    }
+  },
+  "components": {
+    "requestBodies": {
+      "Pet": {
+        "description": "Pet object that needs to be added to the store",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          }
+        }
+      },
+      "UserArray": {
+        "description": "List of user object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "petstore_auth": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
+            "scopes": {
+              "write:pets": "modify pets in your account",
+              "read:pets": "read your pets"
+            }
+          }
+        }
+      },
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      }
+    }
+  }
+}
